@@ -6,19 +6,15 @@ export const createProject = async (projectName: string, templateDir: string, pr
     const spinner = ora(`Boilerplating ${projectName}...`).start();
     
     try {
-        // Use only the current working directory and project name
-        const resolvedProjectDir = path.join(process.cwd(), projectName);
-
-        // Check if directory exists and is not empty
         try {
-            const files = await fs.readdir(resolvedProjectDir);
+            const files = await fs.readdir(projectDir);
             if (files.length > 0) {
-                spinner.fail(`Project directory ${resolvedProjectDir} is not empty. Please choose an empty directory.`);
+                spinner.fail(`Project directory ${projectDir} is not empty. Please choose an empty directory.`);
                 return false;
             }
         } catch (error) {
             // Directory doesn't exist, which is fine
-            await fs.mkdir(resolvedProjectDir, { recursive: true });
+            await fs.mkdir(projectDir, { recursive: true });
         }
 
         const template = await fs.readdir(templateDir);
@@ -26,12 +22,12 @@ export const createProject = async (projectName: string, templateDir: string, pr
         for (const file of template) {
             await fs.cp(
                 path.join(templateDir, file), 
-                path.join(resolvedProjectDir, file), 
+                path.join(projectDir, file), 
                 { recursive: true }
             );
         }
 
-        const packageJsonPath = path.join(resolvedProjectDir, "package.json");
+        const packageJsonPath = path.join(projectDir, "package.json");
         const packageJson = await fs.readFile(packageJsonPath, "utf-8");
         const packageJsonData = JSON.parse(packageJson);
         packageJsonData.name = projectName;
