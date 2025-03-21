@@ -6,8 +6,8 @@ export const createProject = async (projectName: string, templateDir: string, pr
     const spinner = ora(`Boilerplating ${projectName}...`).start();
     
     try {
-        // Resolve the full path relative to current working directory
-        const resolvedProjectDir = path.resolve(process.cwd(), projectDir);
+        // Use only the current working directory and project name
+        const resolvedProjectDir = path.join(process.cwd(), projectName);
 
         // Check if directory exists and is not empty
         try {
