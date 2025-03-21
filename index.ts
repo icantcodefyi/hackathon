@@ -26,7 +26,7 @@ _  __  / / /_/ // /__ _  ,<  / /_/ // /_ _  / / / /_/ /  / / /     _  ___ |_  /_
     const shouldInstall = await shouldInstallDeps(pkgManager);
 
     const templateDir = path.join(__dirname, "template");
-    const projectDir = path.join(__dirname, projectName);
+    const projectDir = path.join(process.cwd(), projectName);
 
     // Create project files
     const projectCreated = await createProject(projectName, templateDir, projectDir);
