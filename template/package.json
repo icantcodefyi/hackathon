@@ -23,6 +23,8 @@
   "dependencies": {
     "@prisma/client": "^5.14.0",
     "@t3-oss/env-nextjs": "^0.10.1",
+    "@tanstack/react-query": "^5.69.0",
+    "@tanstack/react-query-devtools": "^5.69.0",
     "better-auth": "^1.2.4",
     "geist": "^1.3.0",
     "next": "^15.0.1",
