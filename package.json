@@ -1,0 +1,26 @@
+{
+  "name": "create-hackathon",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "bun run index.ts",
+    "build": "bun build ./index.ts --outdir ./dist",
+    "dev": "bun --watch run index.ts"
+  },
+  "bin": {
+    "create-hackathon": "./dist/index.js"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@clack/core": "^0.4.1",
+    "@clack/prompts": "^0.10.0",
+    "chalk": "^5.4.1",
+    "execa": "^9.5.2",
+    "ora": "^8.2.0"
+  }
+}
