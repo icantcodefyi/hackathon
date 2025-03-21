@@ -1,4 +1,5 @@
-import { text, confirm } from "@clack/prompts";
+#!/usr/bin/env node
+import { text, confirm, isCancel } from "@clack/prompts";
 import chalk from "chalk";
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -31,15 +32,30 @@ const projectName = await text({
     placeholder: "my-project",
 }) as string;
 
+if (!projectName || projectName.length === 0 || isCancel(projectName)) {
+    console.log(chalk.red("❌ Project name is required. Exiting..."));
+    process.exit(1);
+}
+
 const initalizeGit = await confirm({
     message: "Should we initialize a Git repository and stage the changes?",
     initialValue: true,
 });
 
+if (isCancel(initalizeGit)) {
+    console.log(chalk.red("❌ Git initialization cancelled. Exiting..."));
+    process.exit(1);
+}
+
 const installPkg = await confirm({
     message: `Should we run '${pkgManager}${pkgManager === "yarn" ? "'" : " install'"} for you?`,
     initialValue: false,
 });
+
+if (isCancel(installPkg)) {
+    console.log(chalk.red("❌ Dependency installation cancelled. Exiting..."));
+    process.exit(1);
+}
 
 const execWithSpinner = async (
     projectDir: string,
@@ -123,7 +139,7 @@ const runInstallCommand = async (
 
     if (initalizeGit) {
         const projectDir = path.join(__dirname, projectName);
-        
+
         // Check if git is installed
         const isGitInstalled = () => {
             try {
