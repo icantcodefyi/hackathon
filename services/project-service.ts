@@ -6,6 +6,18 @@ export const createProject = async (projectName: string, templateDir: string, pr
     const spinner = ora(`Boilerplating ${projectName}...`).start();
     
     try {
+        // Check if directory exists and is not empty
+        try {
+            const files = await fs.readdir(projectDir);
+            if (files.length > 0) {
+                spinner.fail(`Project directory ${projectDir} is not empty. Please choose an empty directory.`);
+                return false;
+            }
+        } catch (error) {
+            // Directory doesn't exist, which is fine
+            await fs.mkdir(projectDir, { recursive: true });
+        }
+
         const template = await fs.readdir(templateDir);
 
         for (const file of template) {
